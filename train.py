@@ -216,6 +216,11 @@ def main(_):
         model_weights_queues.append(mp.Queue(1))
         experience_queues.append(mp.Queue(1))
 
+    if FLAGS.num_agents <= 0:
+        raise ValueError("FLAGS.num_agents must be a positive integer")
+
+    tm_subsets = np.array_split(game.tm_indexes, FLAGS.num_agents)
+
     tm_subsets = np.array_split(game.tm_indexes, FLAGS.num_agents)
 
     coordinator = mp.Process(target=central_agent, args=(config, game, model_weights_queues, experience_queues))
